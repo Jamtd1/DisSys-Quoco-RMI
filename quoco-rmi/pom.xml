@@ -12,5 +12,6 @@
         <module>girlpower</module>
         <module>broker</module>
         <module>client</module>
+        
     </modules>
 </project>

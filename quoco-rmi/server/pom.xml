@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>labs</groupId>
-    <artifactId>girlpower</artifactId>
+    <artifactId>server</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
@@ -15,11 +15,6 @@
             <groupId>labs</groupId>
             <artifactId>core</artifactId>
             <version>0.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
         </dependency>
     </dependencies>
 
