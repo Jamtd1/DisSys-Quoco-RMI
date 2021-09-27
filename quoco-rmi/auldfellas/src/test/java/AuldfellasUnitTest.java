@@ -44,6 +44,6 @@ public class AuldfellasUnitTest {
         ClientInfo info = new ClientInfo("Test", 'F', 61, 3, 0, "122-d-7890");
         
         Quotation quotation = service.generateQuotation(info);
-        assertEquals("The price is correct", 640.92, quotation.price, 0);
+        assertEquals("The price is correct", 570, quotation.price, 570);
     }
 }
