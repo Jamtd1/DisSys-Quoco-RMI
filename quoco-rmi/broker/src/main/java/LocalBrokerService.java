@@ -1,5 +1,10 @@
 // package service.broker;
 
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,9 +24,9 @@ public class LocalBrokerService implements BrokerService {
 	public List<Quotation> getQuotations(ClientInfo info) {
 		List<Quotation> quotations = new LinkedList<Quotation>();
 		
-		for (String name : ServiceRegistry.list()) {
+		for (String name : Registry.list()) {
 			if (name.startsWith("qs-")) {
-				QuotationService service = ServiceRegistry.lookup(name, QuotationService.class);
+				QuotationService service = Registry.lookup(name, QuotationService.class);
 				quotations.add(service.generateQuotation(info));
 			}
 		}

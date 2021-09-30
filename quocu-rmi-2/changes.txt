@@ -1,0 +1,73 @@
+1. removed 'package service.core;' from each java file in service.core package as it was not required
+2. As per 2b removed 'import service.registry.Service' from BrokerService.java and QuotationService.java.
+3. Imported java.rmi.RemoteException and java.rmi.Remote into the files mentioned in change 2
+4. BrokerService.java interface extends Remote instead of Service and throws RemoteException
+5. QuotationService.java interface extends remote instead of Service and throws RemoteException
+6. ClientInfo class implements Serializable (2.c)
+7. Quotation class implements Serializable (2.c)
+8. removed the following from AFQService.java
+    package service.auldfellas;
+    import service.core.AbstractQuotationService;
+    import service.core.ClientInfo;
+    import service.core.Quotation;
+    import service.core.QuotationService;
+9.Removed the following from AuldfellasUnitTest.java as the test revealed that they didn't exist in this project.
+    import service.core.Constants;
+    import service.core.QuotationService;
+    import service.auldfellas.AFQService;
+10. 'import static org.junit.Assert.assertEquals;' was added to AuldfellasUnitTest.java inorder to test whether a quotation was being generated. The form of AssertEquals used was 'assertEquals(String message, double expected, double actual, double delta)'
+    Note: for this test it was assumed that clientInfo was a working method.
+11. Removed the following from the Server.java code given in the lecture notes as this project does not have the service package
+    import service.auldfellas.AFQService;
+    import service.core.ClientInfo;
+    import service.core.Quotation;
+    import service.core.QuotationService;
+    import service.core.Constants;
+12. 'added the following piece of code to the auldfellas pom.xml file to allow mvn exec and mvn assembly to run. As the AFQService.java does not contain a main class, the main class was set to Server, i.e. the main class in Server.java. This will be repeated for girlpower and dodgydrivers pom.xml file. The other modules will be discussed later.
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <mainClass>Server</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                    <phase>package</phase>
+                    <goals><goal>single</goal></goals>
+                    <configuration>
+                        <archive>
+                        <manifest>
+                            <mainClass>Server</mainClass>
+                        </manifest>
+                        </archive>
+                        <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+13. replace 'Registry registry = LocateRegistry.createRegistry(1099);' with an if statement determining whether there is a registry already running.
+14. changed host to args[0] as the string 'host' threw a variable errro.
+15. removed following from DDQSErvice.java
+    package service.dodgydrivers;
+    import service.core.AbstractQuotationService;
+    import service.core.ClientInfo;
+    import service.core.Quotation;
+    import service.core.QuotationService;
+16. removed following from GPQService.java
+    package service.girlpower;
+    import service.core.AbstractQuotationService;
+    import service.core.ClientInfo;
+    import service.core.Quotation;
+    import service.core.QuotationService;
+17. Added print statements to the registry if statement in the server.java files for each quotation service to try and determine why I couldn't get two services to work at the same time in different terminal windows. Alas I couldn't find a solution. I changed out host for "localhost" as host was throwing a variable error.

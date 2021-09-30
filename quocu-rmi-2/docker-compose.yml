@@ -1,0 +1,16 @@
+version: '3'
+services:
+    broker:
+        build: broker
+    girlpower:
+        build: girlpower
+    auldfellas:
+        build: auldfellas
+    dodgydrivers:
+        build: dodgydrivers
+    client:
+        build: client
+        environment: 
+            SERVER_HOST: broker
+        depends_on:
+        - broker
