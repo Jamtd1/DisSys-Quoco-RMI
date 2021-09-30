@@ -70,4 +70,17 @@
     import service.core.ClientInfo;
     import service.core.Quotation;
     import service.core.QuotationService;
-17. Added print statements to the registry if statement in the server.java files for each quotation service to try and determine why I couldn't get two services to work at the same time in different terminal windows. Alas I couldn't find a solution. I changed out host for "localhost" as host was throwing a variable error.
+17. Added print statements to the registry if statement in the server.java files for each quotation service to try and determine why I couldn't get two services to work at the same time in different terminal windows. Turned out I forgot to change out AULD_FELLA_SERVICE in the server.java files of the other servers
+18. I changed out host for "localhost" as host was throwing a variable error.
+19. Added a connection to the registry in the LocalBrokerService.java file
+20. Added a server.java file to the broker module so it could instantiate the registry through it instead of through the other modules
+21. Left the code in for the other servers to generate the registry if needed in the future. 
+22. Changed the broker Server.java to create a BrokerService remote object instead of the QuotationService remote object
+23. Added a try catch to the LocalBrokerService.java to inform the user of errors
+24. Added the registerService module to the class too. As this implements the BrokerService, the method required a definition of the method too.
+25. Removed the creation of new service.registers for each server from the beginning of main
+26. set the main method to look for the registry using a given host in the arguments
+27. Set the client to lookup the BrokerService object for the quotation infromation using the rmi registry 
+28. Added a plugin for docker, but commented it out again as it wasn't packaging correctly. Commented it out in the pom.xml files after realising it was commented out in the sockets files
+29. added the docker files to the modules and the docker-compose file
+30. wrote the unittesting for the broker server similar to the other servers.

@@ -18,11 +18,18 @@ public class Server {
             
             // Create the Remote Object
             QuotationService quotationService = (QuotationService)
-                UnicastRemoteObject.exportObject(afqService,0);
+                UnicastRemoteObject.exportObject(afqService, 0);
             
             // Register the object with the RMI Registry
-            registry.bind(Constants.AULD_FELLAS_SERVICE, quotationService);
-            
+            // registry.bind(Constants.AULD_FELLAS_SERVICE, quotationService);
+
+            // Get the broker service for registering the service
+            BrokerService broker = (BrokerService) registry.lookup(Constants.BROKER_SERVICE);
+
+            // Bind the current service to the registry
+            // below doesn't work yet with maven
+            broker.registerService(Constants.AULD_FELLAS_SERVICE, quotationService);
+
             System.out.println("STOPPING SERVER SHUTDOWN");
             while (true) {Thread.sleep(1000); }
         } catch (Exception e) {

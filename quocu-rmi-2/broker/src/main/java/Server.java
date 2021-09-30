@@ -18,7 +18,7 @@ public class Server {
             
             // Create the Remote Object
             BrokerService brokerService = (BrokerService)
-                UnicastRemoteObject.exportObject(lbService,0);
+                UnicastRemoteObject.exportObject(lbService, 0);
             
             // Register the object with the RMI Registry
             registry.bind(Constants.BROKER_SERVICE, brokerService);

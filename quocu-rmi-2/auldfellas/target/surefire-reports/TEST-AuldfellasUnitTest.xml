@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="2" failures="0" name="AuldfellasUnitTest" time="0.035" errors="0" skipped="0">
+<testsuite tests="2" failures="0" name="AuldfellasUnitTest" time="0.043" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="13.0.2+8"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home/lib"/>
-    <property name="maven.multiModuleProjectDirectory" value="/Users/jenniferdaly/development/Sem4/DisSys/DisSys-Quoco-RMI/quocu-rmi-2"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/jenniferdaly/development/Sem4/DisSys/DisSys-Quoco-RMI/quocu-rmi-2/auldfellas"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -13,7 +13,7 @@
     <property name="user.country" value="IE"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="/Users/jenniferdaly/development/Sem4/DisSys/DisSys-Quoco-RMI/quocu-rmi-2"/>
+    <property name="user.dir" value="/Users/jenniferdaly/development/Sem4/DisSys/DisSys-Quoco-RMI/quocu-rmi-2/auldfellas"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="13.0.2+8"/>
     <property name="os.arch" value="x86_64"/>
@@ -40,7 +40,7 @@
     <property name="java.class.path" value="/opt/apache-maven/boot/plexus-classworlds-2.6.0.jar"/>
     <property name="java.vm.specification.version" value="13"/>
     <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher package"/>
     <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk-13.0.2.jdk/Contents/Home"/>
     <property name="user.language" value="en"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
@@ -56,6 +56,6 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
   </properties>
-  <testcase classname="AuldfellasUnitTest" name="generationTest" time="0.035"/>
+  <testcase classname="AuldfellasUnitTest" name="generationTest" time="0.043"/>
   <testcase classname="AuldfellasUnitTest" name="connectionTest" time="0"/>
 </testsuite>

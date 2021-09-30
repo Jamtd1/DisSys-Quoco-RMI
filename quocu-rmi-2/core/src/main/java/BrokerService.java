@@ -11,4 +11,5 @@ import java.rmi.RemoteException;
  */
 public interface BrokerService extends Remote {
 	public List<Quotation> getQuotations(ClientInfo info) throws RemoteException;
+	public void registerService(String name, java.rmi.Remote service) throws Exception;
 }

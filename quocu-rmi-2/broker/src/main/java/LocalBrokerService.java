@@ -3,7 +3,6 @@ import java.util.List;
 
 import java.rmi.registry.Registry;
 
-
 /**
  * Implementation of the broker service that uses the Service Registry.
  * 
@@ -27,5 +26,13 @@ public class LocalBrokerService implements BrokerService {
 		}
 
 		return quotations;
+	}
+
+	public void registerService(String name, java.rmi.Remote service) {
+		try {
+			registry.bind(name, service);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
