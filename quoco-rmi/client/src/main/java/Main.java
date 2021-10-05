@@ -1,25 +1,6 @@
-// package client;
-
 import java.text.NumberFormat;
 
-// import service.auldfellas.AFQService;
-// import service.broker.LocalBrokerService;
-// import service.core.BrokerService;
-// import service.core.ClientInfo;
-// import service.core.Quotation;
-// import service.core.Constants;
-// import service.dodgydrivers.DDQService;
-// import service.girlpower.GPQService;
-// import service.registry.ServiceRegistry;
-
 public class Main {
-	static {
-		// Create the services and bind them to the registry.
-		ServiceRegistry.bind(Constants.GIRL_POWER_SERVICE, new GPQService());
-		ServiceRegistry.bind(Constants.AULD_FELLAS_SERVICE, new AFQService());
-		ServiceRegistry.bind(Constants.DODGY_DRIVERS_SERVICE, new DDQService());
-		ServiceRegistry.bind(Constants.BROKER_SERVICE, new LocalBrokerService());
-	}
 	
 	/**
 	 * This is the starting point for the application. Here, we must
