@@ -1,0 +1,143 @@
+quoco-ws
+    Pom file copied from the rmi version of quoco from previous lab
+    changed the groupid to lab3
+    changed artifactid to quoco-ws
+    
+    docker-compose
+        The file was set up based on the docker-compose file in the lecture. 
+        The file was adjusted for the modules in lab3
+        The file was adjusted for the HOSTNAME JmDNS system
+        This was then commented out when no longer required
+
+Auldfellas
+    Pom file
+        Pom file copied from the rmi version of quoco from previous lab
+        changed the groupid to lab3
+        Replaced the code in the pom file with the code from the ws-quote service pom file
+        Removed the dependencies for javax and sun as using java 8 jdk
+        Inserted a dependency for the core module
+        Set the main class to service.core.Quoter in the pom file
+        changed groupid to lab3
+        Added dependency for jmdns
+        Changed main class in the plugins to Main as service.core.Quoter did not contain the ain class
+    
+    src/main/java/service/core
+        inserted service.auldfellas into service.core in the auldfellas module
+        changed the filename and class name to Quoter
+        annotated the Quoter class with @WebService
+        imported javax.jws.WebService
+        annotate the Quoter class with @SOAPBinding
+        imported javax.jws.soap.SOAPBinding and javax.jws.soap.SOAPBinding.*
+        set SOAPBinding style to RPC and use to LITERAL
+        removed implements QuotationService
+        replaced the @Override with @WebMethod from public quotation generateQuotation()
+        imported the service.core packages for ClientInfo, Quotation and AbstractQuotationService
+        changed the package to service.core
+
+    src/main/java
+        created a Main.java file and class
+        Added the code from the project file to the main class
+        imported packages for httpserver, endpoint, concurrent Executors, InetAddress, InetSocketAddress, IOException, service.core.quoter, Jmdns, ServiceInfo
+        Set up the JmDNS to create a service instance using the path
+        Changed the JmDNS set up to use port and service name from the create arguments with the shortened path
+        Added a Thread.sleep(8000) to ensure all services loaded before trying to get information from the services
+        changed the "_http._tcp.local." to "_quotation._tcp.local." in order to avoid the client from discovering this service.
+        needed to change the port number to 9004 as docker could not compile to 9001 as it appeared to be in use already
+
+    dockerfile
+        copied in the code from the client dockerfile and changed it to auldfellas.jar
+        adjusted the dockerfile to use HOSTNAME
+        This was deprecated upon switch to proper JmDNS implementation 
+        HOSTNAME was commented out
+Broker
+    Pom file copied from the rmi version of quoco from previous lab
+    changed the groupid to lab3
+
+    src/mai/java/service/core
+        copied in the LocalBrokerService from the quoco-master
+        renamed it to Broker
+        similar to the quoter files, the Broker class was annotated with WebService and SOAPBinding
+        changed SOAPBinding style to DOCUMENT
+        removed implements BrokerService
+        initialised an ArrayList to take the urls for the quoter services.
+        Added a main class which initialises the broker class and creates the instance of the service
+        Addjusted getQuotations to loop through the ArrayList of service urls to get the quotations from each service
+        Due to this the serviceRegistry was not required
+        Took the code to generateQuotation from the temporary code written for the client class
+        added the QuoterService file to the broker module too so it could access this.
+        Added the code to generate a JmDNS Service under "_broker._tcp.local." 
+        Added the code for Broker to listen for the "_quotation._tcp.local." services
+
+    dockerfile
+        copied in from client nd adjusted to broker
+        adjusted the dockerfile to use HOSTNAME
+        This was deprecated upon switch to proper JmDNS implementation 
+        HOSTNAME was commented out
+Client
+    Pom file copied from the rmi version of quoco from previous lab
+    changed the groupid to lab3
+
+    src/main/java/service/core
+        set up the QuoterService file as per the notes
+    
+    src/main/java
+        set up the client class as per the notes
+        Adjusted the client class to insert code to print out statements based on flags in the arguments
+        Once broker was set up the code to look for a quoterService was replaced with similar code which would look for the brokerService instead
+        Due to this a brokerService class was created along the same lines as the QuotationService
+        The WSDLServiceListner was set to listen out for "_broker._tcp.local."
+        The code associated with the client from the quoco-master was copied into the client class
+        i.e. the displayProfile, displayQuotation and ClientInfo[]
+        The code before the implementation of the jmDNS system was commented out but remains 
+
+    dockerfile
+        the docker file was implemented using 
+        FROM openjdk:8-jre-alpine
+        COPY target/*-jar-with-dependencies.jar /client.jar
+        CMD java -jar /client.jar
+
+Core
+    Pom file copied from the rmi version of quoco from previous lab
+    changed the groupid to lab3
+    Added src/main/java/service/core folder structure
+    Copied over the files in service.core from quoco-master
+    Removed BrokerService and QuotationService
+    Removed the implements QuotationService from AbstractQuotationService
+    Added a default constructor to Quotation
+    Replaced the information in the pom file with the copy pasted pom file information from the rmi calculator core file
+    changed the groupid to lab3
+    changed the version number to 0.0.1
+
+Dodgydrivers
+    pom file 
+        Pom file copied from the rmi version of quoco from previous lab
+        changed the groupid to lab3
+        replaced the code in the pom file with the auldfellas pom file
+        changed artifactId to dodgydrivers
+        changed the main class in the plugins back to ${main.class} as main class was included in the Quoter class.
+    
+    src/main/java/service/core
+        Brought in the service.dodgydrivers code from quoco-master. 
+        copy pasted the main class from auldfellas into the dodgydrivers
+        copied in the import packages required
+        changed the port number to 9003
+        removed the implements QuotationService 
+        added the same WebService, WebMethods and SOAPBinding to the class as per auldfellas
+    
+    dockerfile
+        copied in the dockerfile code and changed the variables to dodgydrivers.jar
+        adjusted the dockerfile to use HOSTNAME
+        This was deprecated upon switch to proper JmDNS implementation 
+        HOSTNAME was commented out
+
+Girlpower
+    Pom file copied from the rmi version of quoco from previous lab 
+    changed the groupid to lab3
+    See dodgydrivers, same process was used.
+    port 9002 was chosen for girlpower
+
+    dockerfile
+        copied in from client and adjusted to girlpower
+        adjusted the dockerfile to use HOSTNAME
+        This was deprecated upon switch to proper JmDNS implementation 
+        HOSTNAME was commented out

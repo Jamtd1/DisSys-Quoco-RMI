@@ -9,11 +9,17 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.*;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.util.concurrent.Executors;
-
 import javax.xml.ws.Endpoint;
+
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
+
+import java.io.IOException;
+
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+
+import java.util.concurrent.Executors;
 
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
@@ -33,12 +39,27 @@ public class Quoter extends AbstractQuotationService {
 	
 	public static void main(String[] args) {
 		try {
+			// String host = args.length > 0 ? args[0]:"localhost";
+
 			Endpoint endpoint = Endpoint.create(new Quoter());
 			HttpServer server = HttpServer.create(new InetSocketAddress(9002), 5);
 			server.setExecutor(Executors.newFixedThreadPool(5));
 			HttpContext context = server.createContext("/quotation");
 			endpoint.publish(context);
 			server.start();
+
+			Thread.sleep(8000);
+			
+			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
+			// ServiceInfo serviceInfo = ServiceInfo.create(
+			// 	"_quotation._tcp.local.", "sqs", 9000, "path=http://"+host+":9002/quotation?wsdl"
+			// );
+
+			ServiceInfo serviceInfo = ServiceInfo.create(
+				"_quotation._tcp.local.", "girlpower", 9002, "path=/quotation?wsdl"
+			);
+
+			jmdns.registerService(serviceInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

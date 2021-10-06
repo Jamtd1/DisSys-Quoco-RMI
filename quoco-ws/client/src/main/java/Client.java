@@ -3,39 +3,99 @@ import service.core.*;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.net.URL;
+import java.net.InetAddress;
+
+import javax.jmdns.JmDNS;
+import javax.jmdns.ServiceInfo;
 
 import java.util.List;
 import java.text.NumberFormat;
 
-public class Client {
-    public static void main(String[] args) {
-        try {
-			String host = "localhost";
-			int port = 9000;
-			// More Advanced flag-based configuration
-			for (int i=0; i < args.length; i++) {
-				switch (args[i]) {
-					case "-h":
-						host = args[++i];
-						break;
-					case "-p":
-						port = Integer.parseInt(args[++i]);
-						break;
-					default:
-						System.out.println("Unknown flag: " + args[i] +"\n");
-						System.out.println("Valid flags are:");
-						System.out.println("\t-h <host>\tSpecify the hostname of the target service");
-						System.out.println("\t-p <port>\tSpecify the port number of the target service");
-						System.exit(0);
-				}
-			}
-			URL wsdlUrl = new
-				URL("http://" + host + ":" + port + "/broker?wsdl");
+import java.util.EventListener;
+import javax.jmdns.ServiceEvent;
+import javax.jmdns.ServiceListener;
 
+public class Client {
+    public static void main(String[] args) throws Exception{
+        // try {
+			// String host = "localhost";
+			// int port = 9000;
+			// // More Advanced flag-based configuration
+			// for (int i=0; i < args.length; i++) {
+			// 	switch (args[i]) {
+			// 		case "-h":
+			// 			host = args[++i];
+			// 			break;
+			// 		case "-p":
+			// 			port = Integer.parseInt(args[++i]);
+			// 			break;
+			// 		default:
+			// 			System.out.println("Unknown flag: " + args[i] +"\n");
+			// 			System.out.println("Valid flags are:");
+			// 			System.out.println("\t-h <host>\tSpecify the hostname of the target service");
+			// 			System.out.println("\t-p <port>\tSpecify the port number of the target service");
+			// 			System.exit(0);
+			// 	}
+			// }
+
+		// 	URL wsdlUrl = new
+		// 		URL("http://" + host + ":" + port + "/broker?wsdl");
+
+		// 	QName serviceName =
+		// 		new QName("http://core.service/", "BrokerService");
+
+		// 	Service service = Service.create(wsdlUrl, serviceName);
+
+		// 	QName portName = new QName("http://core.service/", "BrokerPort");
+
+		// 	BrokerService brokerService =
+		// 		service.getPort(portName, BrokerService.class);
+
+		// 	for (ClientInfo info : clients) {
+		// 		displayProfile(info);
+		// 		List<Quotation> quotations = brokerService.getQuotations(info);
+
+		// 		for (Quotation quotation : quotations) {
+		// 			displayQuotation(quotation);
+		// 		}
+		// 	}
+        // // } catch (Exception e) {
+        // //     e.printStackTrace();
+        // // }
+
+		
+		JmDNS jmDNS = JmDNS.create(InetAddress.getLocalHost());
+		jmDNS.addServiceListener("_broker._tcp.local.", new WSDLServiceListener());
+	}
+
+	public static class WSDLServiceListener implements ServiceListener {
+		@Override
+		public void serviceAdded(ServiceEvent event) {
+
+		}
+		@Override
+		public void serviceRemoved(ServiceEvent event) {
+
+		}
+		@Override
+		public void serviceResolved(ServiceEvent event) {
+			String path = event.getInfo().getPropertyString("path");
+			// if (path != null) connectToService(path);
+			if (path != null) {
+				String url = event.getInfo().getURLs()[0];
+				connectToService(url);
+			}
+		}
+
+	}
+
+	private static void connectToService(String url) {
+		try {
+			URL wsdlURL = new URL(url);
 			QName serviceName =
 				new QName("http://core.service/", "BrokerService");
 
-			Service service = Service.create(wsdlUrl, serviceName);
+			Service service = Service.create(wsdlURL, serviceName);
 
 			QName portName = new QName("http://core.service/", "BrokerPort");
 
@@ -50,9 +110,9 @@ public class Client {
 					displayQuotation(quotation);
 				}
 			}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     /**
