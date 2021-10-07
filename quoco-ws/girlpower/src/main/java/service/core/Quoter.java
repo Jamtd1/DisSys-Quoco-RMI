@@ -39,8 +39,11 @@ public class Quoter extends AbstractQuotationService {
 	
 	public static void main(String[] args) {
 		try {
+
+			// depricated since host is no longer required in ServiceInfo
 			// String host = args.length > 0 ? args[0]:"localhost";
 
+			// create an endpoint for the girlpower quoter class
 			Endpoint endpoint = Endpoint.create(new Quoter());
 			HttpServer server = HttpServer.create(new InetSocketAddress(9002), 5);
 			server.setExecutor(Executors.newFixedThreadPool(5));
@@ -51,11 +54,11 @@ public class Quoter extends AbstractQuotationService {
 			Thread.sleep(8000);
 			
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
-			// ServiceInfo serviceInfo = ServiceInfo.create(
-			// 	"_quotation._tcp.local.", "sqs", 9000, "path=http://"+host+":9002/quotation?wsdl"
-			// );
-
 			ServiceInfo serviceInfo = ServiceInfo.create(
+				// depricated
+				// 	"_quotation._tcp.local.", "sqs", 9000, "path=http://"+host+":9002/quotation?wsdl"
+
+				// create the serviceInfo with a call tag of _quotation._tcp.local. so client cannot find it along with the service name, port number and wsdl url suffix
 				"_quotation._tcp.local.", "girlpower", 9002, "path=/quotation?wsdl"
 			);
 

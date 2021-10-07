@@ -9,15 +9,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.*;
 
-// import java.io.IOException;
-// import java.net.InetSocketAddress;
-// import java.util.concurrent.Executors;
-
-// import javax.xml.ws.Endpoint;
-
-// import com.sun.net.httpserver.HttpContext;
-// import com.sun.net.httpserver.HttpServer;
-
 /**
  * Implementation of the AuldFellas insurance quotation service.
  * 
@@ -27,6 +18,7 @@ import javax.jws.soap.SOAPBinding.*;
 @WebService
 @SOAPBinding(style = Style.RPC, use = Use.LITERAL)
 public class Quoter extends AbstractQuotationService {
+
 	// All references are to be prefixed with an AF (e.g. AF001000)
 	public static final String PREFIX = "AF";
 	public static final String COMPANY = "Auld Fellas Ltd.";
@@ -38,6 +30,7 @@ public class Quoter extends AbstractQuotationService {
 	 * 20% discount for less than 3 penalty points
 	 * 50% penalty (i.e. reduction in discount) for more than 60 penalty points 
 	 */
+	
 	@WebMethod
 	public Quotation generateQuotation(ClientInfo info) {
 		// Create an initial quotation between 600 and 1200

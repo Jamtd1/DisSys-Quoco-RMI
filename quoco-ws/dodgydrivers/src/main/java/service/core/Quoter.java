@@ -40,27 +40,32 @@ public class Quoter extends AbstractQuotationService {
     public static void main(String[] args) {
 		try {
 
+			// depricated as host no longer required in the path of serviceInfo
 			// String host = args.length > 0 ? args[0]:"localhost";
 
+			// create an endpoint for the dodgydrivers quoter class
 			Endpoint endpoint = Endpoint.create(new Quoter());
 			HttpServer server = HttpServer.create(new InetSocketAddress(9003), 5);
 			server.setExecutor(Executors.newFixedThreadPool(5));
 			HttpContext context = server.createContext("/quotation");
 			endpoint.publish(context);
+			
 			server.start();
-
+			
 			Thread.sleep(8000);
 			
 			JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
-			// ServiceInfo serviceInfo = ServiceInfo.create(
-			// 	"_quotation._tcp.local.", "sqs", 9000, "path=http://"+host+":9003/quotation?wsdl"
-			// );
-
 			ServiceInfo serviceInfo = ServiceInfo.create(
+
+				//depricated
+				// 	"_quotation._tcp.local.", "sqs", 9000, "path=http://"+host+":9003/quotation?wsdl"
+				
+				// create the serviceInfo with a call tag of _quotation._tcp.local. so client cannot find it along with the service name, port number and wsdl url suffix
 				"_quotation._tcp.local.", "dodgydrivers", 9003, "path=/quotation?wsdl"
 			);
 
 			jmdns.registerService(serviceInfo);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

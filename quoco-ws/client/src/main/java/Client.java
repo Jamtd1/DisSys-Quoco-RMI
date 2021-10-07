@@ -63,20 +63,25 @@ public class Client {
         // //     e.printStackTrace();
         // // }
 
-		
+		// initialise a JmDNS variable and assign it an InetAddress
 		JmDNS jmDNS = JmDNS.create(InetAddress.getLocalHost());
+
+		// Add a service listener to listen for the broker service indicated by _broker
 		jmDNS.addServiceListener("_broker._tcp.local.", new WSDLServiceListener());
 	}
 
+	//implement a WSDLServiceListener class which implements the ServiceListener class
 	public static class WSDLServiceListener implements ServiceListener {
+		
+		// default code, no changes required
 		@Override
-		public void serviceAdded(ServiceEvent event) {
+		public void serviceAdded(ServiceEvent event) {}
 
-		}
+		// default code, no changes required
 		@Override
-		public void serviceRemoved(ServiceEvent event) {
+		public void serviceRemoved(ServiceEvent event) {}
 
-		}
+		// When the listener finds a service get the path to the service and store it in a string variable called url
 		@Override
 		public void serviceResolved(ServiceEvent event) {
 			String path = event.getInfo().getPropertyString("path");
@@ -89,23 +94,37 @@ public class Client {
 
 	}
 
+	// initialise the connectToService method with the url found in the listener
 	private static void connectToService(String url) {
 		try {
+
+			// assign the url received in the args to a variable
 			URL wsdlURL = new URL(url);
+			
+			// Initialise variable serviceName and assign the namespace BrokerService to it
 			QName serviceName =
 				new QName("http://core.service/", "BrokerService");
 
+			// Initialise service variable and assign a service based on the listener url and the namespace
 			Service service = Service.create(wsdlURL, serviceName);
 
+			// Initialise the variable portname and assign the namespace BrokerPort to it
 			QName portName = new QName("http://core.service/", "BrokerPort");
 
+			// Initialise a variable brokerService and assign the retrieved port to it
 			BrokerService brokerService =
 				service.getPort(portName, BrokerService.class);
 
+			// for each client in the list of clients 
 			for (ClientInfo info : clients) {
+
+				// retireve the clients info and print it
 				displayProfile(info);
+
+				// create a list of quotations and call the getQuotations method with the client info from the brokerService
 				List<Quotation> quotations = brokerService.getQuotations(info);
 
+				// display each of the quotations retrieved by the broker service
 				for (Quotation quotation : quotations) {
 					displayQuotation(quotation);
 				}
