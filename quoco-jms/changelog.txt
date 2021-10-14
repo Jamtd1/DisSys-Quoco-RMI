@@ -1,0 +1,48 @@
+Auldfellas
+    AFQService
+        Not much was changed in the auldfellas 
+    Receiver
+        Receiver was set up as per the lab notes
+        A consumer topic was set up to receive information from broker
+        A producer queue was set up to send the quotations for the client
+        A try catch surrounds the message reading and sending in order to catch any JMSExceptions and print them
+    Pom file
+        The pom file was created with the core and org.apache.activemq set as dependecies
+
+Girlpower & Dodgydrivers
+    The code for the auldfellas receiver and pom file was reused for these quotation services and adjusted to the respective services.
+
+Core 
+    As per the lab notes the service.core files were adjusted to remove the service.register
+    service.message
+        QuotationRequestMessage and QuotationResponseMessage was set up as per the lab notes
+        ClientApplicationMessage was created to create the message with the list of quotations for the client along with a client id number
+
+Client
+    Main
+        The main class was temporarily set up as per the lab notes
+        After the broker was added the client Main class was adjusted and most of the code removed
+        A brokerRequests produce was created to handle the request being sent to the broker
+        brokerConsumer was set up to receive the ClientApplicationMessage message from the broker
+        Instead of calling only the fist client a for loop was used to send a message to the broker with each clients information for quotation
+    Pom file
+        the pom file was copied from auldfellas and adjusted
+
+Broker
+    Main
+        Took the temporary code from the initial client.Main file for adjustment
+        Adjusted the queues and topics to allow for Requests, Responses, Quotations, and Applications.
+        clientConsumer = Requests queue
+        clientProducer = Responses queue
+        appsConsumer = Quotations queue
+        applicationsProducer = Applications topic
+        Inside a while loop the code does the following
+        clientConsumer receives a message and if its a QuotationRequestMessage it sends the message through applicationsProducer
+        A ClientApplicationMessage is initialised anf a thread is started.
+        Inside this thread the apsConsumer will look for QuotationResponseMessage messages and add the information to the quotations list
+        Once the thread is started the thread will work for two seconds before being interupted to avoid a hanging message
+        After the thread is interupted a respsone message is generated and sent with the clientProducer
+        Try catch expressions surround the code to catch any errors
+    Pom file
+        The pom file was coppied from auldfellas and adjusted for broker
+

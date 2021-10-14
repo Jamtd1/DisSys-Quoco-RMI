@@ -1,0 +1,39 @@
+version: '3'
+
+services: 
+  activemq:
+    image: rmohr/activemq:latest
+    ports:
+      - 8161:8161
+      - 61616:61616
+
+  auldfellas:
+    build: auldfellas
+    environment:
+      HOST: activemq
+      
+
+  girlpower:
+    build: girlpower
+    environment:
+      HOST: activemq
+      
+
+  dodgydrivers:
+    build: dodgydrivers
+    environment:
+      HOST: activemq
+    
+
+  client:
+    build: client
+    environment:
+      HOST: activemq
+     
+
+  broker:
+    build: broker
+    environment:
+      HOST: activemq
+      
+  

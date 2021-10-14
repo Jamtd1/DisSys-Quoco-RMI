@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import service.core.*;
 import service.message.*;
+// imoort service.message.ClientApplicationMessage;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -35,59 +36,71 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 		String host = args.length > 0 ? args[0]:"localhost";
 		ConnectionFactory factory = new ActiveMQConnectionFactory("failover://tcp://"+host+":61616");
 
-		try{
-			Connection connection = factory.createConnection();
-						
+		try {
+			Connection connection = factory.createConnection();				
 			connection.setClientID("client");
-			
 			Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+			
+			// Create the queue for holding all requests sent to the broker
+			Queue brokerReqQ = session.createQueue("REQUESTS");
+			// Create the queue for holding all responses from the broker
+			Queue brokerResponseQ = session.createQueue("RESPONSES");
+			// Create a producer for sending requests to the broker
+			MessageProducer brokerRequests = session.createProducer(brokerReqQ);
+			// Create a consumer for recieving the responses from the broker
+			MessageConsumer brokerConsumer = session.createConsumer(brokerResponseQ);
 
-			Queue queue = session.createQueue("QUOTATIONS");
-			Topic topic = session.createTopic("APPLICATIONS");
-			MessageProducer producer = session.createProducer(topic);
-			MessageConsumer consumer = session.createConsumer(queue);
 
-			Map<Long, ClientInfo> cache = new HashMap<Long, ClientInfo>();
+			// Create a seed number for giving requests a unique ID
 			int SEED_ID = 0;
-			QuotationRequestMessage quotationRequest = new QuotationRequestMessage(SEED_ID++, clients[0]);
-			Message request = session.createObjectMessage(quotationRequest);
-			System.out.print(request);
-			cache.put(quotationRequest.id, quotationRequest.info);
-
-			producer.send(request);
-
-			System.out.println("Message Sent");
 			
+			// Start the connection with the broker
 			connection.start();
-			Message message = consumer.receive();
 
-			System.out.println("Message recieved");
+				
+			for (int i = 0; i < clients.length; i++) {
+				// Create a new request in the form of a class
+				QuotationRequestMessage quotationRequest = new QuotationRequestMessage(SEED_ID++, clients[i]);
+				// Create a request object message for sending to the broker
+				Message request = session.createObjectMessage(quotationRequest);
 
-			if (message instanceof ObjectMessage) {
-				Object content = ((ObjectMessage) message).getObject();
-				if (content instanceof QuotationResponseMessage) {
-					QuotationResponseMessage response = (QuotationResponseMessage) content;
-					ClientInfo info = cache.get(response.id);
-					displayProfile(info);
-					displayQuotation(response.quotation);
-					System.out.println("\n");
-				}
+				// Send the message to the broker
+				brokerRequests.send(request);
+
+				// Wait for a response from the broker
+				Message message = brokerConsumer.receive();
 				message.acknowledge();
-			} else {
-				System.out.println("Unknown message type: " +
-				message.getClass().getCanonicalName());
+
+				// Check the message type is correct
+				if (message instanceof ObjectMessage) {
+					// Get the message object from the response
+					Object content = ((ObjectMessage) message).getObject();
+					
+					if (content instanceof ClientApplicationMessage) {
+						// Get the response info
+						ClientApplicationMessage response = (ClientApplicationMessage) content;
+						
+						// Display the client info to the user
+						displayProfile(response.info);
+						
+						for(int r = 0; r < response.quotations.size(); r++) {
+							displayQuotation(response.quotations.get(r));
+						}
+						System.out.println("\n");
+					}
+				} else {
+					System.out.println("Unknown message type: " +
+					message.getClass().getCanonicalName());
+				}
+
 			}
-			
-			
 		} catch(JMSException e) {
 			System.out.println("ERROR OCCURRED");
 			e.printStackTrace();
 		}
-		
 	}
 	
 	/**

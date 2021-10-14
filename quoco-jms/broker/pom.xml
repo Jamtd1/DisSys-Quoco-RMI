@@ -16,6 +16,13 @@
             <artifactId>core</artifactId>
             <version>0.0.1</version>
         </dependency>
+
+        <!-- jms dependency -->
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -25,7 +32,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <configuration>
-                    <mainClass>Server</mainClass>
+                    <mainClass>broker.Main</mainClass>
                 </configuration>
             </plugin>
             <plugin>
@@ -38,7 +45,7 @@
                 <configuration>
                     <archive>
                     <manifest>
-                        <mainClass>Server</mainClass>
+                        <mainClass>broker.Main</mainClass>
                     </manifest>
                     </archive>
                     <descriptorRefs>

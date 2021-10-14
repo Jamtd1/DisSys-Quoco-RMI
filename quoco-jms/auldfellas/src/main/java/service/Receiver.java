@@ -28,14 +28,10 @@ public class Receiver {
         ConnectionFactory factory = new ActiveMQConnectionFactory("failover://tcp://"+host+":61616");
 
         try {
-            
-			System.out.println("TEST TEST TEST TEST TEST TEST TEST");
             Connection connection = factory.createConnection();
             
-			System.out.println("TEST TEST TEST TEST TEST TEST TEST");
             connection.setClientID("auldfellas");
             
-			System.out.println("TEST TEST TEST TEST TEST TEST TEST");
             Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             
             Queue queue = session.createQueue("QUOTATIONS");
