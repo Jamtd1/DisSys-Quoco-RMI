@@ -1,0 +1,58 @@
+Task 1
+
+Set up the mvn modules folders for auldfellas, broker, core, client, dodgydrivers, girlpower.
+Took pom file for the quoco-rest from quoco-ws and changed groupID to lab4 and artifactid to quoco-rest.
+Took the pom file for the core module from quoco-ws and again adjusted the groupid to lab4.
+Took the pom file for the remaining modules from the phonebook example. 
+Set groupid to lab4.
+set artifactid and name to auldfellas.
+Changed the description to be appropiate for auldfellas.
+inserted the dependecy of the core module.
+Copied this addjusted pomfile and pasted it into the remaining modules.
+Adjusted each pom file based on the module it is contained within.
+For the client pom file an additional pom file for mvn exec was included.
+Created a src/main/java/services/core folder in the core module.
+inserted the AbstractQuotationService, CLientInfo, Constants, Quotations classes from quoco-master
+removed the implementations for quotationServices class from AbstractQuotationService
+Adjusted ClientInfo and Quotations to JavaBeans styled classes
+ClientInfo  
+    Changed the fields to a private field from public
+    For each field added a public getter and a public setter
+    set the clas to implement serializable 
+Quotations
+    Changed the public fields to private fields
+    For each field add a public getter and public setter
+    set the class to implement Serializable
+compiles the core code
+installed the core code
+
+Task 2
+
+Added src/main/jav/service/auldfellas folder to auldfellas module
+copy pasted in the AFQService class from the quoco-master project
+Added the rest code as per the lab notes
+Due to the JavaBeans style the AFQService class was set to implement Serializable.
+Changed getReference9() on line 110 to getReference() as this was assumed to be a spelling error in the notes as I couldn't find this method anywhere else and the method wouldn't compile
+Additionally 9 is the key which holds the open bracket "(" symbol which solidified the idea this was an error.
+Pulled the initialisation of the fields in the generateQuotations method out of the method and into the class declaration
+Set the fields to private and implemented public getters and public setters fro each of the fields
+adjusted the code in generateQuotations to call on these getters and setters instead.
+Removed the @Override annotation on the gernerateQuotations class and removed the need to implement QuotaionService
+Adjusted the clientInfo calls to call the getters instead of the fields since they were now private
+Added a default constructor for the AFQService class
+Added the required imports for the code
+Created the applications class for the auldfellas module
+Pasted in the code as per the lecture notes and added the required imports
+Compiled the auldfellas code
+ran the code using the spring-boot:run
+Created the src/main/java/ folder in client and added a Client class
+Adjusted the main class in the pom file to client.Client
+Copied the deisplayProfile() and displayQuotation() methods into the class
+Adjusted the Clientinfo info calls to call the getters due to the private classes
+Similarily changed the quotation calls to getters
+Copied in the ClientInfo test data
+Added in the main method as per the lecture notes
+Added the imports required to run the code
+set the package to client
+ 
+
