@@ -23,9 +23,6 @@ public class Client {
         displayQuotation(quotation);
         }
 
-
-
-
     /**
 	 * Display the client info nicely.
 	 * 

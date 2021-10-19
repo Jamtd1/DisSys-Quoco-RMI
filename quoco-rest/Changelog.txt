@@ -54,5 +54,25 @@ Copied in the ClientInfo test data
 Added in the main method as per the lecture notes
 Added the imports required to run the code
 set the package to client
- 
+compiled and ran client while auldfellas was running and retrieved the correct information
+
+Task 3
+Added a src/main/resources folder to auldfellas module
+created a file called application.properties in this folder
+added server.port=8081 to this file 
+This allowed auldfellas to use port 8081 instead of the default 8080 port.
+Tested this change using postman
+Copied the service.dodgydrivers package from quoco-master into dodgydrivers/src/main/java
+copied in the required imports used in AFQService
+Adjusted the dodgydrivers DDQService class to a JavaBeans style
+Pulled the fields out of the generateQuotation and converted them into private fields with getters and setters
+adjusted the field calls in the other methods to use the getters required.
+copied in the code to control the HTTP for the dodgydrivers from the AFQService
+Created the Applications class in Dodgydrivers and copied in the code from the AFQService.
+Changed the package to dodgydrivers
+Copied in the Application class from dodgydrivers into girlpower and changed the package to service.girlpower
+Adjusted the GPQService class with the same changes made to the DDQService and AFQService in regards to changing the class to JavaBean
+Added in the codeto control HTTP for GPQService
+Created the resources/application.properties file in dodgydrivers and set port to 8082
+created the resources/application.properties file in girlpower and set port to 8083
 

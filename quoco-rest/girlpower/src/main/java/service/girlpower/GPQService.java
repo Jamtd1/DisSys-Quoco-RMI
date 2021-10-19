@@ -1,4 +1,4 @@
-package service.auldfellas;
+package service.girlpower;
 
 import service.core.ClientInfo;
 import service.core.AbstractQuotationService;
@@ -25,21 +25,21 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.Serializable;
 
 /**
- * Implementation of the AuldFellas insurance quotation service.
+ * Implementation of the Girl Power insurance quotation service.
  * 
  * @author Rem
  *
  */
 @RestController
-public class AFQService extends AbstractQuotationService implements Serializable {
+public class GPQService extends AbstractQuotationService implements Serializable {
 
 	// default constructor
-	public AFQService() {}
+	public GPQService() {}
 
-	// All references are to be prefixed with an AF (e.g. AF001000)
-	public static final String PREFIX = "AF";
-	public static final String COMPANY = "Auld Fellas Ltd.";
-
+	// All references are to be prefixed with an DD (e.g. DD001000)
+	public static final String PREFIX = "GP";
+	public static final String COMPANY = "Girl Power Inc.";
+	
 	// private fields
 	private double price;
 	private int discount;
@@ -62,41 +62,45 @@ public class AFQService extends AbstractQuotationService implements Serializable
 
 	/**
 	 * Quote generation:
-	 * 30% discount for being male
-	 * 2% discount per year over 60
-	 * 20% discount for less than 3 penalty points
-	 * 50% penalty (i.e. reduction in discount) for more than 60 penalty points 
+	 * 50% discount for being female
+	 * 20% discount for no penalty points
+	 * 15% discount for < 3 penalty points
+	 * no discount for 3-5 penalty points
+	 * 100% penalty for > 5 penalty points
+	 * 5% discount per year no claims
 	 */
 
 	public Quotation generateQuotation(ClientInfo info) {
-		
-		// Create an initial quotation between 600 and 1200
-		double initialPrice = generatePrice(600, 600);
+		// Create an initial quotation between 600 and 1000
+		double initialPrice = generatePrice(600, 400);
 		setPrice(initialPrice);
 		
-		// Automatic 30% discount for being male
-		int initialDiscount = (info.getGender() == ClientInfo.MALE) ? 30:0;
+		// Automatic 50% discount for being female
+		int initialDiscount = (info.getGender() == ClientInfo.FEMALE) ? 50:0;
 		setDiscount(initialDiscount);
-		
-		// Automatic 2% discount per year over 60...
-		int additionalDiscount = getDiscount();
-		additionalDiscount += (info.getAge() > 60) ? (2*(info.getAge()-60)) : 0;
-		
+
 		// Add a points discount
+		int additionalDiscount = getDiscount();
 		additionalDiscount += getPointsDiscount(info);
+		
+		// Add a no claims discount
+		additionalDiscount += getNoClaimsDiscount(info);
 		setDiscount(additionalDiscount);
 		
 		// Generate the quotation and send it back
 		return new Quotation(COMPANY, generateReference(PREFIX), (getPrice() * (100-getDiscount())) / 100);
 	}
 
-	private int getPointsDiscount(ClientInfo info) {
-		if (info.getPoints() < 3) return 20;
-		if (info.getPoints() <= 6) return 0;
-		return -50;
-		
+	private int getNoClaimsDiscount(ClientInfo info) {
+		return 5*info.getNoClaims();
 	}
 
+	private int getPointsDiscount(ClientInfo info) {
+		if (info.getPoints() == 0) return 20;
+		if (info.getPoints() < 3) return 15;
+		if (info.getPoints() < 6) return 0;
+		return -100;
+	}
 
 	// the below methods handles the POST request that is submitted to "/quotations/" URI.
 	private Map<String, Quotation> quotations = new HashMap<>();
